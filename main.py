@@ -24,7 +24,7 @@ def Start_chat(Spy):                                         # defination of sta
                     1. update a status
                     2. Add a new friend
                     3. Send a secrate message
-                    4. Read a personal a meesage
+                    4. Read a personal meesage
                     5. Read chat from users
                     6. Load friends
                     0. exit"""
@@ -99,48 +99,33 @@ def add_status(current_status_msg):
             print("invalid entry\ntry again")
         return updated_status
 
-#=========================(Fn for read the file)==========================
-
-def load_friends():
-    with open("db.csv",'rb') as friends_data:
-        reader = csv.reader(friends_data)
-        for row in reader:
-            new_friend = {'name' : row[0],
-                  'salutation' : row[1],
-                  'age' :row[2],
-                  'rating' : row[3],
-                  'is_online' :row[4]
-                 }
-
-    friend.append(spy_friend)
-
-
-#==============================add_friend() function=======================================================
+#==============================Add friend() function=======================================================
 
 def add_friend():
     new_friend = {'name' : " ",
                   'salutation' : " ",
                   'age' : 0,
                   'rating' : 0.0,
-                  'is_online' : True
+                  'is_online' : True,
+                  'chats' : []
                  }
     new_friend['name']= raw_input("Enter a friend name ")
-    new_salutation =raw_input ("what should call your friend(mr./miss.)? ")
-    new_friend['name'] = new_salutation + " " +new_friend['name']
+    new_salutation = raw_input ("what should call your friend(mr./miss.)? ")
+    new_friend['name'] = new_salutation + " " + new_friend['name']
     new_friend['age'] = int(input("Enter your friend age "))
     new_friend['rating'] = float(raw_input("Enter your friend rating? "))
 
 
     if len(new_friend['name']) > 0 and new_friend['age'] > 12 and new_friend['age'] < 60:
         friend.append(new_friend)
-        with open("db.csv",'a') as friend_data:                                 # a append friends in a file
+        with open("db.csv",'a') as friend_data:      # a append friends in a file
             writer = csv.writer(friend_data)
             writer.writerow([new_friend["name"],new_friend["salutation"],new_friend["age"],new_friend["rating"],new_friend["is_online"]])
     else:
         print("sorry! your friend does not must one invalid to be spy user")
     return len(friend)
 
-#====================sending a secrate message to friend fn=====================
+#====================sending a secrate message to friend =======================
 
          #=============slect a friend from list =================
 
@@ -155,6 +140,7 @@ def slect_a_friend():
     return choice
 
         #==============send a secrate message =====================
+
 def send_message():
     frnd_choice = slect_a_friend()
     original_image = raw_input("enter the name of image:")
@@ -163,11 +149,27 @@ def send_message():
     Steganography.encode(original_image,output_image,text)
     print("your message is sent SUCCESSFULLY:")
 
+#======================Read a secret message====================================
+
 def read_message():
     sender = slect_a_friend()
     output_path = raw_input("enter the name of image:")
     secrate_text = Steganography.decode(output_path)
-    print("your secreate message is:%s" %secrate_text)
+    print("your secreate message is:%s" %(secrate_text))
+
+#=========================(Fn for read the file)================================
+
+    def load_friend():
+        with open('db.csv', 'rb') as friends_data:
+            reader = csv.reader(friends_data)
+            for row in reader:
+                new_friends = { 'name' : row[0],
+                                'salutation' : row[1],
+                                'age' : row[2],
+                                'rating' : row[3],
+                                'is_online' : row[4],
+                              }
+                friends.append(new_friends)
 
 #===============================Main fn start_chat==============================
 
